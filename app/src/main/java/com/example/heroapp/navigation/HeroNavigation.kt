@@ -2,27 +2,37 @@ package com.example.heroapp.navagation
 
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.KeyboardArrowUp
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Share
-import androidx.compose.material3.*
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.heroapp.model.McdViewModel
-import com.example.heroapp.screens.home.HomeScreen
 import com.example.heroapp.screens.details.DetailsScreen
+import com.example.heroapp.screens.home.HomeScreen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -30,13 +40,14 @@ fun AppBar(
     currentScreen: String,
     navController: NavController,
     navigateUp: () -> Unit,
-    textToShare: String,
     context: Context,
-    modifier: Modifier
+    textToShare: String,
+    onHelpClick: () -> Unit,
+    onSettingsClick: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
-    val backStackEntry by navController.currentBackStackEntryAsState()
-    val canNavigateBack = backStackEntry?.destination?.route != AppScreens.HomeScreen.name
-    Log.d("canNavigateBack", canNavigateBack.toString())
+    val canNavigateBack = navController.previousBackStackEntry != null
+    var menuExpanded by remember { mutableStateOf(false) }
 
     TopAppBar(
         title = { Text("McDonald's Menu") },
@@ -48,14 +59,15 @@ fun AppBar(
             if (canNavigateBack) {
                 IconButton(onClick = navigateUp) {
                     Icon(
-                        imageVector = Icons.Default.KeyboardArrowUp,
+                        imageVector = Icons.Default.ArrowBack,
                         contentDescription = "Back"
                     )
                 }
             }
         },
         actions = {
-            if (textToShare.isNotEmpty()) {
+            // Share button
+            if (textToShare.isNotBlank()) {
                 IconButton(onClick = {
                     val intent = Intent(Intent.ACTION_SEND).apply {
                         type = "text/plain"
@@ -66,6 +78,32 @@ fun AppBar(
                 }) {
                     Icon(imageVector = Icons.Default.Share, contentDescription = "Share")
                 }
+            }
+
+            // Overflow menu
+            IconButton(onClick = { menuExpanded = true }) {
+                Icon(Icons.Default.MoreVert, contentDescription = "More Options")
+            }
+
+            DropdownMenu(
+                expanded = menuExpanded,
+                onDismissRequest = { menuExpanded = false }
+            ) {
+                DropdownMenuItem(
+                    text = { Text("Settings") },
+                    onClick = {
+                        menuExpanded = false
+                        onSettingsClick()
+                    }
+                )
+
+                DropdownMenuItem(
+                    text = { Text("Help") },
+                    onClick = {
+                        menuExpanded = false
+                        onHelpClick()
+                    }
+                )
             }
         }
     )
