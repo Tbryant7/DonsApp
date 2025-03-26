@@ -151,8 +151,8 @@ fun McdItemCard(item: McdItem, onClick: (String) -> Unit = {}) {
                 contentDescription = item.name ?: "Food Image",
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(180.dp),
-                contentScale = ContentScale.Crop
+                    .height(250.dp),
+                contentScale = ContentScale.FillBounds
             )
 
             Column(modifier = Modifier.padding(16.dp)) {

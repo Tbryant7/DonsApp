@@ -88,8 +88,8 @@ fun DetailsScreen(
                                 contentDescription = item.name,
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .height(200.dp),
-                                contentScale = ContentScale.Crop
+                                    .height(250.dp),
+                                contentScale = ContentScale.FillBounds
                             )
 
                             Column(modifier = Modifier.padding(16.dp)) {
