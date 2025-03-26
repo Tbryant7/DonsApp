@@ -14,8 +14,9 @@ class McdViewModel : ViewModel() {
 
     private val _mcdItems = MutableLiveData<List<McdItem>>()
     val mcdItems: LiveData<List<McdItem>> = _mcdItems
-
-    private val apiKey = "a4a83495ddmshf7e0965c9e681e9p14c029jsn3aaf07be0b5c"
+//d686fd815cmsh70abd06154772a8p11311cjsn0f323eb4688f
+    //a4a83495ddmshf7e0965c9e681e9p14c029jsn3aaf07be0b5c
+    private val apiKey = "d686fd815cmsh70abd06154772a8p11311cjsn0f323eb4688f"
     private val host = "mcdonald-s-products-api.p.rapidapi.com"
 
     fun getMenuItems() {
@@ -43,8 +44,8 @@ class McdViewModel : ViewModel() {
                                     ?.value?.toIntOrNull()
 
                                 val updatedItem = item.copy(
-                                    calories = calories,
-                                    imageUrl = "https://via.placeholder.com/400x200.png?text=McItem+$id"
+                                    calories = calories
+                                    //apiImageUrl = "https://via.placeholder.com/400x200.png?text=McItem+$id"
                                 )
 
                                 detailedItems.add(updatedItem)

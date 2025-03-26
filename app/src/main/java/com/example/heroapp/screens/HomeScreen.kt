@@ -76,13 +76,14 @@ fun McdItemRow(item: McdItem, onClick: (String) -> Unit = {}) {
                 modifier = Modifier
                     .padding(12.dp)
                     .fillMaxWidth()
-                    .height(180.dp),
+                    .height(250.dp),
                 shape = RectangleShape,
             ) {
                 Image(
                     painter = painter,
-                    contentScale = ContentScale.Crop,
+                    contentScale = ContentScale.FillBounds,
                     contentDescription = "Food Item"
+
                 )
             }
 
