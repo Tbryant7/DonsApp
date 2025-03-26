@@ -9,6 +9,7 @@ import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 
 private val DarkColorScheme = darkColorScheme(
@@ -33,20 +34,33 @@ private val LightColorScheme = lightColorScheme(
     */
 )
 
+enum class ColorSchemeType {
+    LIGHT, DARK, BLUE
+}
+
 @Composable
 fun HeroAppTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
-    // Dynamic color is available on Android 12+
+    colorSchemeType: ColorSchemeType = if (isSystemInDarkTheme()) ColorSchemeType.DARK else ColorSchemeType.LIGHT,
     dynamicColor: Boolean = true,
     content: @Composable () -> Unit
 ) {
+    val context = LocalContext.current
+
     val colorScheme = when {
         dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
-            val context = LocalContext.current
-            if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
+            if (colorSchemeType == ColorSchemeType.DARK)
+                dynamicDarkColorScheme(context)
+            else
+                dynamicLightColorScheme(context)
         }
-
-        darkTheme -> DarkColorScheme
+        colorSchemeType == ColorSchemeType.DARK -> DarkColorScheme
+        colorSchemeType == ColorSchemeType.BLUE -> lightColorScheme(
+            primary = Color(0xFF0288D1),
+            secondary = Color(0xFF03A9F4),
+            tertiary = Color(0xFF81D4FA),
+            background = Color(0xFFE1F5FE),
+            surface = Color(0xFFE1F5FE)
+        )
         else -> LightColorScheme
     }
 

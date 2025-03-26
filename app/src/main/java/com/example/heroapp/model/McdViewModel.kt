@@ -7,6 +7,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.heroapp.api.ApiInterface
 import kotlinx.coroutines.launch
+import com.example.heroapp.ui.theme.ColorSchemeType
+
 
 class McdViewModel : ViewModel() {
 
@@ -19,6 +21,12 @@ class McdViewModel : ViewModel() {
     private val apiKey = "d686fd815cmsh70abd06154772a8p11311cjsn0f323eb4688f"
     private val host = "mcdonald-s-products-api.p.rapidapi.com"
 
+    private val _themeType = MutableLiveData(ColorSchemeType.LIGHT)
+    val themeType: LiveData<ColorSchemeType> = _themeType
+
+    fun setThemeType(newType: ColorSchemeType) {
+        _themeType.value = newType
+    }
     fun getMenuItems() {
         viewModelScope.launch {
             try {
@@ -51,19 +59,19 @@ class McdViewModel : ViewModel() {
                                 detailedItems.add(updatedItem)
                             }
                         } else {
-                            Log.e("REAL_API_ITEM_FAIL", "❌ Product $id failed with code ${itemResponse.code()}")
+                            Log.e("REAL_API_ITEM_FAIL", " Product $id failed with code ${itemResponse.code()}")
                         }
                     }
 
-                    Log.d("REAL_API_RESULT", "✅ Loaded ${detailedItems.size} real items")
+                    Log.d("REAL_API_RESULT", " Loaded ${detailedItems.size} real items")
                     _mcdItems.value = detailedItems
 
                 } else {
-                    Log.e("REAL_API_FAIL", "❌ Menu load failed: ${menuResponse.code()} - ${menuResponse.errorBody()?.string()}")
+                    Log.e("REAL_API_FAIL", " Menu load failed: ${menuResponse.code()} - ${menuResponse.errorBody()?.string()}")
                 }
 
             } catch (e: Exception) {
-                Log.e("REAL_API_EXCEPTION", "💥 ${e.message}")
+                Log.e("REAL_API_EXCEPTION", " ${e.message}")
             }
         }
     }
