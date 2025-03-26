@@ -14,7 +14,7 @@ data class McdItem(
     // Manually injected fields for UI
     val calories: Int? = null,
     val apiImageUrl: String? = null,
-    val price: String? = null
+    val apiPrice: String? = null
 ){
 
     // BEC Biscut - 200300
@@ -31,6 +31,8 @@ data class McdItem(
     val imageUrl: String
         get() = apiImageUrl ?: companionImages[id] ?: "https://via.placeholder.com/300x180.png?text=No+Image"
 
+    val price: String
+        get() = apiPrice ?: companionPrices[id] ?: "N/A"
     companion object {
         private val companionImages = mapOf(
             200300 to "https://s7d1.scene7.com/is/image/mcdonalds/DC_202405_0085_BaconEggCheeseBiscuit_1564x1564-1:nutrition-calculator-tile",
@@ -43,6 +45,19 @@ data class McdItem(
             200306 to "https://s7d1.scene7.com/is/image/mcdonalds/DC_201911_6110_SausageMcGriddle_1564x1564-1:nutrition-calculator-tile",
             200307 to "https://s7d1.scene7.com/is/image/mcdonalds/DC_201907_9841_SausageEggCheeseMcGriddle_1564x1564-2:nutrition-calculator-tile",
             200322 to "https://s7d1.scene7.com/is/image/mcdonalds/DC_202405_0107_BigBreakfast._1564x1564-1:nutrition-calculator-tile"
+        )
+
+        private val companionPrices = mapOf(
+            200300 to "5.19",
+            200298 to "4.89",
+            200449 to "2.99",
+            200161 to "4.79",
+            200301 to "2.99",
+            200302 to "4.89",
+            200304 to "5.19",
+            200306 to "3.65",
+            200307 to "5.99",
+            200322 to "6.99"
         )
         }
 }
